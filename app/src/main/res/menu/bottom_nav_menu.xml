@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/scan"
+        android:checked="true"
+        android:icon="@drawable/bluetooth_scan"
+        android:title="Scan"
+        />
+    <item
+        android:id="@+id/file"
+        android:checked="true"
+        android:icon="@drawable/file_share"
+        android:title="File Share"
+        />
+    <item
+        android:id="@+id/settings"
+        android:checked="true"
+        android:icon="@drawable/settings_icon"
+        android:title="Settings"
+        />
+
+</menu>
