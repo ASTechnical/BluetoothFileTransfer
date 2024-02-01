@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">BluetoothFileTransfer</string>
+    <string name="app_name">BT SHARE ME</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sendtoany">to any Bluetooth Device nearby you</string>
+    <string name="connect">Connect</string>
+    <string name="inter_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="native_ad_unit_id">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="native_ad_unit_id_for_recview">ca-app-pub-3940256099942544/2247696110</string>
+
 </resources>

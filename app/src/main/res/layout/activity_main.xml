@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    tools:context=".MainActivity">
+    android:background="@color/white"
+    tools:context=".Activities.MainActivity">
 
     <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:background="@color/white"
+        android:background="@color/splash"
         android:gravity="center">
 
         <TextView
@@ -19,53 +19,33 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
             android:text="Bluetooth Finder App"
-            android:textColor="#3F8CFE"
+            android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>
 <FrameLayout
     android:id="@+id/fragmentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@id/bottomNav"
+    android:layout_above="@id/template_ads"
     android:layout_below="@id/title"/>
-<!--    <ImageView-->
-<!--        android:id="@+id/scanBtn"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="300dp"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        android:src="@drawable/scan_btn" />-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/pairedB"-->
-<!--        android:layout_width="318dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_above="@+id/bottomNav"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginBottom="60dp"-->
-<!--        android:background="@drawable/paired_rect"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:orientation="horizontal">-->
 
-<!--        <ImageView-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/pair_icon"-->
-<!--            android:layout_marginStart="30dp"/>-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Paired Devices"-->
-<!--            android:textColor="#828282"-->
-<!--        android:layout_marginStart="15dp"-->
-<!--            android:textSize="18sp"/>-->
-<!--    </LinearLayout>-->
-
+    <com.google.android.ads.nativetemplates.TemplateView
+        app:gnt_template_type="@layout/gnt_small_template_view"
+        android:id="@+id/template_ads"
+        android:layout_width="match_parent"
+        android:layout_above="@id/bottomNav"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/splash"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
         app:menu="@menu/bottom_nav_menu" />
+
 
 </RelativeLayout>

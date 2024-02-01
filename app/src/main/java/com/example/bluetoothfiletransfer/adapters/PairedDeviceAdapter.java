@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bluetoothfiletransfer.ForgetDeviceActivity;
+import com.example.bluetoothfiletransfer.Activities.ForgetDeviceActivity;
 import com.example.bluetoothfiletransfer.R;
 import com.example.bluetoothfiletransfer.interfaces.PairedDeviceInterface;
 import com.example.bluetoothfiletransfer.modelclasses.BltDeviceEntity;

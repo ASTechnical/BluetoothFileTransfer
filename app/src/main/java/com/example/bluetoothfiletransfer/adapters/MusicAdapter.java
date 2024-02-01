@@ -11,6 +11,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -40,10 +41,10 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
                 String unused = MusicAdapter.searchText = "";
             } else {
                 String trim = charSequence.toString().toLowerCase().trim();
-                Iterator<AllItemModelClass> it = MusicAdapter.this.musicFullList.iterator();
-                while (it.hasNext()) {
-                    AllItemModelClass next = it.next();
-                    if (next.getItemName().toLowerCase().contains(trim)) {
+                for (AllItemModelClass next : MusicAdapter.this.musicFullList)
+                {
+                    if (next.getItemName().toLowerCase().contains(trim))
+                    {
                         arrayList.add(next);
                         Log.d("ggg", "onQueryTextChange: not null " + charSequence);
                     }
@@ -59,11 +60,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
         public void publishResults(CharSequence charSequence, FilterResults filterResults) {
             MusicAdapter.this.musicList.clear();
             MusicAdapter.this.musicList.addAll((List) filterResults.values);
-            Iterator<AllItemModelClass> it = MusicAdapter.this.musicList.iterator();
-            while (it.hasNext()) {
-                AllItemModelClass next = it.next();
-                if (next.isSelected()) {
-                    SelectedItemsArray.setSelectedItemByName(MusicAdapter.this.getIndexByName(next.getImgPath()), new SelectedItems(next.getImgPath(), MusicAdapter.this.musicList.indexOf(next), Constants.MUSIC, next.getItemSize()));
+            for (AllItemModelClass next : MusicAdapter.this.musicList)
+            {
+                if (next.isSelected())
+                {
+                    SelectedItemsArray.setSelectedItemByName(MusicAdapter.this.getIndexByName(next.getImgPath()),
+                            new SelectedItems(next.getImgPath(), MusicAdapter.this.musicList.indexOf(next), Constants.MUSIC, next.getItemSize()));
                 }
             }
             MusicAdapter.this.notifyDataSetChanged();
@@ -99,6 +101,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
         }
     }
 
+    @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         return new ViewHolder(LayoutInflater.from(this.mContext).inflate(R.layout.recycler_pics_row, viewGroup, false));
     }
@@ -113,7 +116,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
         ((RequestBuilder) ((RequestBuilder) ((RequestBuilder)
                 Glide.with(this.mContext).load(allItemModelClass.getImgPath()).
                         thumbnail(0.5f).diskCacheStrategy(DiskCacheStrategy.ALL))
-                .skipMemoryCache(true)).placeholder((int) R.drawable.audio)).into(viewHolder.iv_image);
+                .skipMemoryCache(true)).placeholder((int) R.drawable.baseline_music_note_24)).into(viewHolder.iv_image);
         viewHolder.tv_fileSize.setText(allItemModelClass.getItemSize());
         viewHolder.tv_fileName.setText(allItemModelClass.getItemName());
         if (allItemModelClass.isSelected()) {
@@ -124,11 +127,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
     }
 
     public int getIndexByName(String str) {
-        String str2 = str.toString();
-        Iterator<SelectedItems> it = SelectedItemsArray.getAllSelectedItems().iterator();
-        while (it.hasNext()) {
-            SelectedItems next = it.next();
-            if (next.getImgPath().equals(str2)) {
+        String str2 = str;
+        for (SelectedItems next : SelectedItemsArray.getAllSelectedItems())
+        {
+            if (next.getImgPath().equals(str2))
+            {
                 return SelectedItemsArray.getAllSelectedItems().indexOf(next);
             }
         }

@@ -1,20 +1,18 @@
 package com.example.bluetoothfiletransfer.adapters;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.bluetoothfiletransfer.AppsFragment;
-import com.example.bluetoothfiletransfer.FilesFragment;
-import com.example.bluetoothfiletransfer.MusicFragment;
-import com.example.bluetoothfiletransfer.PicturesFragment;
-import com.example.bluetoothfiletransfer.VideosFragment;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+import com.example.bluetoothfiletransfer.Fragments.AppsFragment;
+import com.example.bluetoothfiletransfer.Fragments.FilesFragment;
+import com.example.bluetoothfiletransfer.Fragments.MusicFragment;
+import com.example.bluetoothfiletransfer.Fragments.PicturesFragment;
+import com.example.bluetoothfiletransfer.Fragments.VideosFragment;
+
+public class ViewPagerAdapter extends FragmentStatePagerAdapter
+{
     public int getCount() {
         return 5;
     }

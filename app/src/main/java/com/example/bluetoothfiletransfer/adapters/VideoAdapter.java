@@ -108,8 +108,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         AllItemModelClass allItemModelClass = this.videoList.get(i);
         Log.d("iii", "onBindViewHolder: " + i);
-        if (viewHolder.playIcon.getVisibility() == 8) {
-            viewHolder.playIcon.setVisibility(0);
+        if (viewHolder.playIcon.getVisibility() == 0) {
+            viewHolder.playIcon.setVisibility(8);
         }
         ((RequestBuilder) ((RequestBuilder) ((RequestBuilder) Glide.with(this.mContext).
                 load(allItemModelClass.getImgPath()).thumbnail(0.5f).diskCacheStrategy(DiskCacheStrategy.ALL))

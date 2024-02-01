@@ -44,15 +44,16 @@ public class SelectedItemsArray {
         itemCount++;
     }
 
-    public static void minusItemCount() {
+    public static int minusItemCount() {
         int i = itemCount;
         if (i != 0) {
             itemCount = i - 1;
         }
+        return itemCount;
     }
 
-    public static void clearSelectedItemArray() {
-        items.clear();
+    public static int clearSelectedItemArray() {
+       return itemCount;
     }
 
     public static void setItemCountZero() {

@@ -2,6 +2,8 @@ package com.example.bluetoothfiletransfer.modelclasses;
 
 import android.graphics.drawable.Drawable;
 
+import com.google.android.gms.ads.nativead.NativeAd;
+
 public class AppsModelClass {
     private Drawable appIcon;
     private String appName;
@@ -19,6 +21,7 @@ public class AppsModelClass {
         this.appPkgName = str3;
         this.isSelected = z;
     }
+
 
     public String getAppName() {
         return this.appName;

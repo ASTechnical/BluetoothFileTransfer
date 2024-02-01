@@ -6,7 +6,7 @@
     android:background="#F5F5F5"
     android:gravity="center"
 
-    tools:context=".ScanDeviceFragment">
+    tools:context=".Fragments.ScanDeviceFragment">
 
     <RelativeLayout
         android:layout_width="318dp"
@@ -30,9 +30,10 @@
             android:layout_height="wrap_content"
             android:thumb="@drawable/thum_bg"
             android:track="@drawable/track_bg"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="30dp"/>
+            android:layout_marginEnd="30dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
     </RelativeLayout>
 
     <ImageView

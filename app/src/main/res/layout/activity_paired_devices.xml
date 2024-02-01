@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="@color/lightGray"
     android:orientation="vertical"
-    tools:context=".PairedDevicesActivity">
+    tools:context=".Activities.PairedDevicesActivity">
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:text="Bluetooth Finder App"
-                android:textColor="#3F8CFE"
+                android:textColor="@color/splash"
                 android:textSize="20sp" />
         </LinearLayout>
         <TextView
@@ -36,14 +36,13 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
             android:text="Paired Devices"
-            android:textColor="#828282"
+            android:textColor="@color/gray"
             android:textSize="20sp" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/bluetooth_device_list_items" />
         <TextView
@@ -53,7 +52,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
             android:text="Other Devices"
-            android:textColor="#828282"
+            android:textColor="@color/gray"
             android:textSize="20sp" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView2"

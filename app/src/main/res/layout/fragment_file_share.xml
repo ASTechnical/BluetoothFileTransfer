@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".FileShareFragment">
+    tools:context=".Fragments.FileShareFragment">
 
     <include
         android:id="@+id/topview"
@@ -16,11 +16,11 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/topview"
+        android:background="#ffffff"
         android:layout_centerInParent="true" />
     <include
-        android:id="@+id/bottomView"
         layout="@layout/main_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

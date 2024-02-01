@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
                 android:id="@+id/linearAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:background="@color/white"
+                android:background="@color/splash"
                 android:gravity="bottom|center_vertical|center_horizontal|center"
                 android:padding="7dp"
                 android:visibility="visible"
@@ -28,60 +28,71 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
-                    android:padding="5dp"
-                     />
+                    android:padding="5dp" />
 
                 <TextView
                     android:id="@+id/appTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="center"
                     android:layout_weight="1.6"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
                     android:padding="2dp"
                     android:text="@string/app_name"
-                    android:textColor="#3F8CFE"
-                    android:textSize="23dp" />
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:id="@+id/btnSearch"
                     android:layout_width="30dp"
                     android:layout_height="40dp"
                     android:layout_weight="0.2"
+                    android:backgroundTint="@color/white"
                     android:padding="5dp"
-                    android:src="@drawable/search_icon" />
+                    android:src="@drawable/baseline_search_24" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearSearchView"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
+               android:layout_marginBottom="8dp"
                 android:background="@color/white"
                 android:gravity="bottom|center_vertical|center_horizontal|center"
                 android:padding="0dp"
                 android:visibility="invisible"
                 android:weightSum="2">
-
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginBottom="6dp"
+               <!-- <ImageView
+                    android:id="@+id/btn_back"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_weight="0.2"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                     />
-
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/back_ic" />-->
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/searchView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1.8"
+                    android:layout_height="40dp"
+                    android:layout_weight="1.5"
+                    android:layout_marginStart="5dp"
+                    android:layout_gravity="center"
                     android:gravity="bottom"
                     app:queryHint="Search Files" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Cancel"
+                    android:layout_gravity="center"
+                    android:textColor="@color/gray"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="0.3"
+                    android:visibility="visible" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -89,8 +100,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linearAppBar"
+                android:background="@color/lightGray"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:background="#3F8CFE"
                 android:padding="5dp"
                 android:weightSum="5">
 
@@ -104,18 +116,26 @@
 
                     <ImageView
                         android:id="@+id/appsIcon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/apps_icon" />
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/app_f_folder_con" />
 
                     <TextView
                         android:id="@+id/appsText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
                         android:text="Apps"
                         android:textColor="@color/white"
-                        android:fontFamily="@font/roboto_medium"
                         android:textSize="10sp" />
+
+                    <View
+                        android:id="@+id/view_app"
+                        android:layout_width="20dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/black"/>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -128,18 +148,24 @@
 
                     <ImageView
                         android:id="@+id/picsIcon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/pics_icon" />
+                        android:layout_width="25dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/picture_f_icon" />
 
                     <TextView
                         android:id="@+id/picsText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
                         android:text="Pics"
                         android:textColor="@color/white"
-                        android:fontFamily="@font/roboto_medium"
                         android:textSize="10sp" />
+                    <View
+                        android:id="@+id/view_pic"
+                        android:layout_width="20dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/black"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -152,18 +178,24 @@
 
                     <ImageView
                         android:id="@+id/videoIcon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/videos_icon" />
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/video_f_icon" />
 
                     <TextView
                         android:id="@+id/videoText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Videos"
                         android:fontFamily="@font/roboto_medium"
+                        android:text="Videos"
                         android:textColor="@color/white"
                         android:textSize="10sp" />
+                    <View
+                        android:id="@+id/view_video"
+                        android:layout_width="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_height="2dp"
+                        android:background="@color/black"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -176,18 +208,24 @@
 
                     <ImageView
                         android:id="@+id/musicIcon"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/music_icon" />
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/music_f_icon" />
 
                     <TextView
                         android:id="@+id/musicText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Music"
                         android:fontFamily="@font/roboto_medium"
+                        android:text="Music"
                         android:textColor="@color/white"
                         android:textSize="10sp" />
+                    <View
+                        android:id="@+id/view_music"
+                        android:layout_width="20dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/black"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -199,19 +237,25 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/fileIcon"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:src="@drawable/file_icon_white" />
+                        android:id="@+id/file_icon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/file_f_icon" />
 
                     <TextView
                         android:id="@+id/fileText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Files"
                         android:fontFamily="@font/roboto_medium"
+                        android:text="Files"
                         android:textColor="@color/white"
                         android:textSize="10sp" />
+                    <View
+                        android:id="@+id/view_file"
+                        android:layout_width="20dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/black"/>
                 </LinearLayout>
             </LinearLayout>
 

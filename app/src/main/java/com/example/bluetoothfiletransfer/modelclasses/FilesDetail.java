@@ -6,10 +6,12 @@ public class FilesDetail {
     boolean isDirectory;
     boolean isFiles;
 
-    public FilesDetail(boolean z, boolean z2, String str) {
-        this.isFiles = z;
-        this.isDirectory = z2;
-        this.fileName = str;
+
+    public FilesDetail(boolean isFiles, boolean isDirectory, String fileName) {
+        this.isFiles = isFiles;
+        this.isDirectory = isDirectory;
+        this.fileName = fileName;
+
     }
 
     public String getFileName() {
@@ -43,4 +45,6 @@ public class FilesDetail {
     public void setDirectory(boolean z) {
         this.isDirectory = z;
     }
+
+
 }
