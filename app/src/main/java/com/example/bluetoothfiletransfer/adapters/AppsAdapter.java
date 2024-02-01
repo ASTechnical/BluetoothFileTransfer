@@ -104,6 +104,7 @@ public class AppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 View adView = inflater.inflate(R.layout.item_native_ad, parent, false);
                 return new AdViewHolder(adView);*/
         }
+        return null;
     }
 
 
