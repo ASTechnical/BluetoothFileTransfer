@@ -57,22 +57,18 @@ public class FileShareFragment extends Fragment {
     static final int MUSIC_TAB = 3;
     static final int PICS_TAB = 1;
     static final int VIDEO_TAB = 2;
-    static String font1 = "DancingScript-Regular.otf";
-    static String font2 = "Lobster_1.3.otf";
     public static TextView tv_itemCount;
     TextView appTitle;
     ImageView btnBack;
     ImageView btnSearch;
     TextView btnSend;
     ViewPagerAdapter customPagerAdapter;
-    private DrawerLayout drawer;
     ImageView imageApps;
     ImageView imageFiles;
     ImageView imageMusic;
     ImageView imagePics;
     ImageView imageVideos;
-    int increment = 0;
-    int increment2 = 0;
+
     LinearLayout linearAppBar;
     LinearLayout linearApps;
     LinearLayout linearFiles;
@@ -81,10 +77,8 @@ public class FileShareFragment extends Fragment {
     LinearLayout linearSearchView;
     LinearLayout linearSend;
     LinearLayout linearVideos;
-    NavigationView nav;
     ImageView nav_menu;
-    //    String pakgID = getActivity().getPackageName().toString();
-    ProgressDialog progressDialog;
+
     SearchView searchView;
     LinearLayout selectedItemLinear;
     public static LinearLayout main_bottom_id;
@@ -95,7 +89,6 @@ public class FileShareFragment extends Fragment {
     View view_video;
     View view_music;
     View view_file;
-    public int selectedTab;
     TextView textApps;
     TextView textFiles;
     TextView textMusic;
@@ -106,29 +99,22 @@ public class FileShareFragment extends Fragment {
     Adapterrr adapterrr;
     AppCompatButton cancelButton;
     ImageView closeButton;
-    //    ViewPagerAdapter viewPagerAdapter, viewPagerAdapter2;
-//    public static TextView tv_itemCount;
-//    int i = 1;
-//    LinearLayout linearSend;
-//    ImageView btnSearch;
-//    TextView appTitle;
-//    SearchView searchView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-        //  Toast.makeText(getActivity(), "creatview", Toast.LENGTH_SHORT).show();
         binding = FragmentFileShareBinding.inflate(inflater, container, false);
         adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(requireContext(), new OnInitializationCompleteListener() {
             @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+               // showmInterstitialAd(null);
             }
         });
-        showmInterstitialAd();
-//        this.drawer = (DrawerLayout) binding.getRoot().findViewById(R.id.drawer);
+
+
         this.viewPager = binding.getRoot().findViewById(R.id.viewpager);
         this.imageApps = binding.getRoot().findViewById(R.id.appsIcon);
         this.imagePics = binding.getRoot().findViewById(R.id.picsIcon);
@@ -167,8 +153,6 @@ public class FileShareFragment extends Fragment {
 
         ((EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text))
                 .setTextColor(getResources().getColor(R.color.black));
-
-        // searchView.setBackgroundResource(R.drawable.search_rounded_bg);
 
         closeButton= searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
         final SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
@@ -219,49 +203,7 @@ public class FileShareFragment extends Fragment {
             }
         });
 
-      /* // main_bottom_id.setVisibility(View.VISIBLE);
-        ((EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text)).setTextColor(getResources()
-                .getColor(R.color.black));
-        final ImageView imageView = (ImageView) searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
-        imageView.setColorFilter(-1);
-        // Set rounded corner background
-        searchView.setBackgroundResource(R.drawable.search_rounded_bg);
 
-        this.searchView.setOnSearchClickListener(new View.OnClickListener()
-        {
-            @SuppressLint("WrongConstant")
-            public void onClick(View view)
-            {
-                imageView.setVisibility(searchView.getQuery().toString().isEmpty() ? 8 : 0);
-
-            }
-        });
-        this.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
-            public boolean onQueryTextSubmit(String str)
-            {
-                return false;
-            }
-
-            @SuppressLint("WrongConstant")
-            public boolean onQueryTextChange(String str)
-            {
-                imageView.setVisibility(str.isEmpty() ? 8 : 0);
-                try
-                {
-                    AppsFragment.appsAdapter.getFilter().filter(str);
-                    PicturesFragment.picsAdapter.getFilter().filter(str);
-                    VideosFragment.videoAdapter.getFilter().filter(str);
-                    MusicFragment.musicAdapter.getFilter().filter(str);
-                    FilesFragment.filesAdapter.getFilter().filter(str);
-                    Log.d("ggg", "onQueryTextChange: " + str);
-                } catch (NullPointerException e)
-                {
-                    Log.d("exex", "onQueryTextChange: Exception " + e);
-                }
-                return false;
-            }
-        });*/
         searchView.setBackgroundResource(R.drawable.search_rounded_bg);
 
         adapterrr = new Adapterrr(getActivity().getSupportFragmentManager());
@@ -308,7 +250,7 @@ public class FileShareFragment extends Fragment {
         linearApps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toast.makeText(getActivity(), "appsbtn", Toast.LENGTH_SHORT).show();
+
                 appsTabSelected();
                 textApps.setTextColor(getResources().getColor(R.color.splash));
                 imageApps.setColorFilter(getResources().getColor(R.color.splash));
@@ -337,14 +279,13 @@ public class FileShareFragment extends Fragment {
         linearSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendByBluetooth();
-
+                showInterstitialAdBeforeBluetooth();
             }
         });
         linearFiles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toast.makeText(getActivity(), "filesBtn", Toast.LENGTH_SHORT).show();
+
                 fileTabSelected();
                 textFiles.setTextColor(getResources().getColor(R.color.splash));
                 imageFiles.setColorFilter(getResources().getColor(R.color.splash));
@@ -423,6 +364,18 @@ public class FileShareFragment extends Fragment {
         return binding.getRoot();
 
     }
+    private void showInterstitialAdBeforeBluetooth() {
+
+        showmInterstitialAd(() -> sendByBluetooth());
+    }
+    static void updateVisibility() {
+        if (tv_itemCount != null && Integer.parseInt(tv_itemCount.getText().toString()) > 0) {
+            main_bottom_id.setVisibility(View.VISIBLE);
+        } else {
+            main_bottom_id.setVisibility(View.GONE);
+        }
+    }
+
 
     public void showSearchLayout() {
         cancelButton.setVisibility(View.VISIBLE);
@@ -436,17 +389,18 @@ public class FileShareFragment extends Fragment {
     private void hideSearchLayout() {
         searchView.setIconified(true);
         linearSearchView.setVisibility(View.GONE);
-       // searchView.setQuery(null, false);
         showDefaultLayout();
     }
 
 
-    public void showmInterstitialAd() {
+    public void showmInterstitialAd(final Runnable adCallback) {
         InterstitialAd.load(requireContext(), getString(R.string.inter_ad_unit_id), adRequest, new InterstitialAdLoadCallback() {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
                 Log.d("Error", loadAdError.toString());
+                // If ad fails to load, execute the callback immediately
+                adCallback.run();
             }
 
             @Override
@@ -455,18 +409,10 @@ public class FileShareFragment extends Fragment {
                 mInterstitialAd = interstitialAd;
                 mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
-                    public void onAdClicked() {
-                        super.onAdClicked();
-
-                    }
-
-                    @Override
                     public void onAdDismissedFullScreenContent() {
                         super.onAdDismissedFullScreenContent();
-                        if (SDK_INT >= Build.VERSION_CODES.S) {
-                            sendByBluetooth();
-
-                        }
+                        // Ad dismissed, execute the callback
+                        adCallback.run();
                         mInterstitialAd = null;
                     }
 
@@ -490,7 +436,7 @@ public class FileShareFragment extends Fragment {
 
                     }
                 });
-
+                mInterstitialAd.show(requireActivity());
             }
         });
     }

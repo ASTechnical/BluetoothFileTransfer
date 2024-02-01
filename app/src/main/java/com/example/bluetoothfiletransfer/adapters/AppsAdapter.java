@@ -80,7 +80,8 @@ public class AppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public int getItemViewType(int position) {
-        return (position % (ITEMS_PER_AD + 1) == 4) ? VIEW_TYPE_AD : VIEW_TYPE_APP;
+
+        return VIEW_TYPE_APP;/*(position % (ITEMS_PER_AD + 1) == 4) ? VIEW_TYPE_AD : VIEW_TYPE_APP;*/
     }
 
     @Override
@@ -136,15 +137,16 @@ public class AppsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private int getRealPosition(int position) {
-        return position - position / (ITEMS_PER_AD + 1);
+        return position;
+        /*position - position / (ITEMS_PER_AD + 1);*/
     }
 
 
 
     @Override
     public int getItemCount() {
-        int adCount = appsList.size() / ITEMS_PER_AD;
-        return appsList.size() + adCount;
+       // int adCount = appsList.size() / ITEMS_PER_AD;
+        return appsList.size(); /*+ adCount;*/
     }
 
     private void bindAppData(AppViewHolder viewHolder, AppsModelClass appsModelClass) {

@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     AdView adView;
     InterstitialAd mInterstitialAd;
+    NativeAd nativeAd1;
     AdRequest adRequest;
     private Fragment currentFragment;
     public boolean filesharefragmentclick =false;
@@ -66,10 +67,11 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
+                showmInterstitialAd();
+                showmNativeAd();
             }
         });
-        showmInterstitialAd();
-        showmNativeAd();
+
 
         checkPermission();
         getSupportFragmentManager()
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onNativeAdLoaded(NativeAd nativeAd) {
                         // Set a background color for the native ad template
-
+                        nativeAd1 = nativeAd;
                         int backgroundColor = ContextCompat.getColor(MainActivity.this, android.R.color.background_light);
                         ColorDrawable background = new ColorDrawable(backgroundColor);
 
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void showInterstitialAdAndReplaceFragment(Fragment fragment) {
-        long delayMillis = 2000; // 2 seconds
+        long delayMillis = 1000; // 1 seconds
 
         // Create a ProgressDialog
         ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
@@ -233,13 +235,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        showmNativeAd();
+
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
 
         if ((mInterstitialAd != null) && (filesharefragmentclick))  {
-            // If ad is loaded, show the ad
             mInterstitialAd.show(MainActivity.this);
-        } else if(filesharefragmentclick){
+        } else if((mInterstitialAd == null)&&(filesharefragmentclick)){
             // If ad is not loaded or failed to load, replace the fragment
             if (currentFragment instanceof FileShareFragment) {
                 getSupportFragmentManager()
@@ -250,7 +251,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
+        if (nativeAd1 == null)
+        {
+            showmNativeAd();
+        }
         if (mInterstitialAd == null)
         {
             showmInterstitialAd();

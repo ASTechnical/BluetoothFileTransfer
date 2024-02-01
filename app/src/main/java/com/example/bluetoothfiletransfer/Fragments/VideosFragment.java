@@ -107,16 +107,18 @@ public class VideosFragment extends Fragment {
                     allItemModelClass.setSelected(false);
                     SelectedItemsArray.removeItem(new SelectedItems(allItemModelClass.getImgPath(), i, Constants.VIDEOS, allItemModelClass.getItemSize()));
                     SelectedItemsArray.minusItemCount();
-                  //  FileShareFragment.main_bottom_id.setVisibility(View.GONE);
                     FileShareFragment.tv_itemCount.setText(String.valueOf(SelectedItemsArray.getItemCount()));
+                    // Update visibility in FileShareFragment
+                    FileShareFragment.updateVisibility();
                     Log.d("fff", "onClick: position removed: " + i);
                     Log.d("fff", "onClick: " + SelectedItemsArray.getArraySize());
                 } else {
                     allItemModelClass.setSelected(true);
                     SelectedItemsArray.addItem(new SelectedItems(allItemModelClass.getImgPath(), i, Constants.VIDEOS, allItemModelClass.getItemSize()));
                     SelectedItemsArray.addItemCount();
-                    FileShareFragment.main_bottom_id.setVisibility(View.VISIBLE);
                     FileShareFragment.tv_itemCount.setText(String.valueOf(SelectedItemsArray.getItemCount()));
+                    // Update visibility in FileShareFragment
+                    FileShareFragment.updateVisibility();
                     Log.d("fff", "onClick: position added: " + i);
                     Log.d("fff", "onClick: " + SelectedItemsArray.getArraySize());
                 }

@@ -8,6 +8,224 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bluetoothfiletransfer.R;
+import com.example.bluetoothfiletransfer.ViewModel.PicturesViewModel;
+import com.example.bluetoothfiletransfer.adapters.PicsAdapter;
+import com.example.bluetoothfiletransfer.modelclasses.AllItemModelClass;
+import com.example.bluetoothfiletransfer.modelclasses.SelectedItems;
+import com.example.bluetoothfiletransfer.modelclasses.SelectedItemsArray;
+import com.example.bluetoothfiletransfer.utils.Constants;
+import com.example.bluetoothfiletransfer.utils.RecyclerTouchListener;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class PicturesFragment extends Fragment {
+    private PicturesViewModel picturesViewModel;
+    private static List<AllItemModelClass> imgList = new ArrayList<>();
+    @SuppressLint("StaticFieldLeak")
+    static PicsAdapter picsAdapter;
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String stringExtra = intent.getStringExtra("message");
+            int intExtra = intent.getIntExtra("position", -1);
+            Log.d("fff", "onReceive: " + intExtra);
+            if (stringExtra.equals(Constants.PICS)) {
+                if (intExtra != -1) {
+                    try {
+                        AllItemModelClass allItemModelClass = imgList.get(intExtra);
+                        if (allItemModelClass.isSelected()) {
+                            allItemModelClass.setSelected(false);
+                        }
+                        picsAdapter.notifyItemChanged(intExtra);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Iterator<Integer> it = intent.getIntegerArrayListExtra("positionArray").iterator();
+                    while (it.hasNext()) {
+                        int intValue = it.next();
+                        AllItemModelClass allItemModelClass2 = imgList.get(intValue);
+                        if (allItemModelClass2.isSelected()) {
+                            allItemModelClass2.setSelected(false);
+                            picsAdapter.notifyItemChanged(intValue);
+                        }
+                    }
+                }
+            }
+            Log.d("receiver", "Got position: " + intExtra);
+        }
+    };
+    private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_pictures, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews(view);
+        initViewModel();
+        registerBroadcastReceiver();
+        new AsyncTaskClass().execute("Images");
+        setRecyclerViewTouchListener();
+    }
+
+    private void initViews(View view) {
+        recyclerView = view.findViewById(R.id.recyclerView);
+        progressBar = view.findViewById(R.id.progressBar);
+    }
+
+    private void initViewModel() {
+        picturesViewModel = new ViewModelProvider(this).get(PicturesViewModel.class);
+        picturesViewModel.getImagesLiveData().observe(getViewLifecycleOwner(), this::updateView);
+    }
+
+    private void registerBroadcastReceiver() {
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, new IntentFilter("custom-event-name"));
+    }
+
+    private void setRecyclerViewTouchListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            public void onLongClick(View view, int i) {
+            }
+
+            public void onClick(View view, int i) {
+                AllItemModelClass allItemModelClass = imgList.get(i);
+                if (allItemModelClass.isSelected()) {
+                    allItemModelClass.setSelected(false);
+                    SelectedItemsArray.removeItem(new SelectedItems(allItemModelClass.getImgPath(), i, Constants.PICS, allItemModelClass.getItemSize()));
+                    SelectedItemsArray.minusItemCount();
+                    FileShareFragment.tv_itemCount.setText(String.valueOf(SelectedItemsArray.getItemCount()));
+                    // Update visibility in FileShareFragment
+                    FileShareFragment.updateVisibility();
+                    Log.d("fff", "onClick: position removed: " + i);
+                    Log.d("fff", "onClick: " + SelectedItemsArray.getArraySize());
+                } else {
+                    allItemModelClass.setSelected(true);
+                    SelectedItemsArray.addItem(new SelectedItems(allItemModelClass.getImgPath(), i, Constants.PICS, allItemModelClass.getItemSize()));
+                    SelectedItemsArray.addItemCount();
+                    FileShareFragment.tv_itemCount.setText(String.valueOf(SelectedItemsArray.getItemCount()));
+                    FileShareFragment.main_bottom_id.setVisibility(View.VISIBLE);
+                    // Update visibility in FileShareFragment
+                    FileShareFragment.updateVisibility();
+                    Log.d("fff", "onClick: position added: " + i);
+                    Log.d("fff", "onClick: " + SelectedItemsArray.getArraySize());
+                }
+                picsAdapter.notifyItemChanged(i);
+            }
+        }));
+    }
+
+    private static ArrayList<AllItemModelClass> getImagesData(Context context) {
+        ArrayList<AllItemModelClass> arrayList = new ArrayList<>();
+        Cursor query = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{"_data", "bucket_display_name"}, (String) null, (String[]) null, "datetaken DESC");
+        int columnIndexOrThrow = query.getColumnIndexOrThrow("_data");
+        query.getColumnIndexOrThrow("bucket_display_name");
+        while (query.moveToNext()) {
+            String string = query.getString(columnIndexOrThrow);
+            arrayList.add(new AllItemModelClass(string, Constants.getFileSize(string), false, getFileName(string)));
+        }
+        return arrayList;
+    }
+
+    private static String getFileName(String str) {
+        return new File(str).getName();
+    }
+
+    private class AsyncTaskClass extends AsyncTask<String, String, ArrayList<AllItemModelClass>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (progressBar.getVisibility() == View.GONE && progressBar.isShown()) {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected ArrayList<AllItemModelClass> doInBackground(String... strArr) {
+            if (strArr[0].equals("Images")) {
+                return getImagesData(getContext());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<AllItemModelClass> arrayList) {
+            super.onPostExecute(arrayList);
+            if (arrayList != null) {
+                picturesViewModel.setImagesData(arrayList);
+                updateView(arrayList);
+            }
+        }
+    }
+
+    @SuppressLint("WrongConstant")
+    private void updateView(ArrayList<AllItemModelClass> arrayList) {
+        imgList = arrayList;
+        if (progressBar.getVisibility() == View.VISIBLE) {
+            progressBar.setVisibility(View.GONE);
+        }
+        PicsAdapter picsAdapter2 = new PicsAdapter(getContext(), arrayList);
+        picsAdapter = picsAdapter2;
+        recyclerView.setAdapter(picsAdapter2);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3, 1, false));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(1048576);
+    }
+
+    @Override
+    public void onDestroy() {
+        unregisterBroadcastReceiver();
+        super.onDestroy();
+    }
+
+    private void unregisterBroadcastReceiver() {
+        try {
+            LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
+        } catch (Exception e) {
+            Log.e("UnRegister Error", "> " + e.getMessage());
+        }
+    }
+}
+
+
+
+
+
+
+/*
+package com.example.bluetoothfiletransfer.Fragments;
+
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -146,7 +364,9 @@ public class PicturesFragment extends Fragment {
         public AsyncTaskClass() {
         }
 
-        /* access modifiers changed from: protected */
+        */
+/* access modifiers changed from: protected *//*
+
         @SuppressLint("WrongConstant")
         public void onPreExecute() {
             super.onPreExecute();
@@ -155,7 +375,9 @@ public class PicturesFragment extends Fragment {
             }
         }
 
-        /* access modifiers changed from: protected */
+        */
+/* access modifiers changed from: protected *//*
+
         public ArrayList<AllItemModelClass> doInBackground(String... strArr) {
             if (strArr[0].equals("Images")) {
                 return PicturesFragment.getImagesData(PicturesFragment.this.getContext());
@@ -163,7 +385,9 @@ public class PicturesFragment extends Fragment {
             return null;
         }
 
-        /* access modifiers changed from: protected */
+        */
+/* access modifiers changed from: protected *//*
+
         public void onPostExecute(ArrayList<AllItemModelClass> arrayList) {
             super.onPostExecute(arrayList);
             if (arrayList != null) {
@@ -173,7 +397,9 @@ public class PicturesFragment extends Fragment {
         }
     }
 
-    /* access modifiers changed from: private */
+    */
+/* access modifiers changed from: private *//*
+
     @SuppressLint("WrongConstant")
     public void updateView(ArrayList<AllItemModelClass> arrayList)
     {
@@ -200,4 +426,4 @@ public class PicturesFragment extends Fragment {
         }
         super.onDestroy();
     }
-}
+}*/
